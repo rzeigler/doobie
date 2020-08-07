@@ -8,13 +8,12 @@ import cats.~>
 import cats.effect.{ Async, ContextShift, ExitCase }
 import cats.free.{ Free => FF } // alias because some algebras have an op called Free
 import scala.concurrent.ExecutionContext
-import com.github.ghik.silencer.silent
-
+import scala.annotation.nowarn
 import java.lang.String
 import java.sql.Ref
 import java.util.Map
 
-@silent("deprecated")
+@nowarn
 object ref { module =>
 
   // Algebra of operations for Ref. Each accepts a visitor as an alternative to pattern-matching.

@@ -17,10 +17,8 @@ lazy val refinedVersion       = "0.9.15"
 lazy val scalaCheckVersion    = "1.14.3"
 lazy val scalatestVersion     = "3.2.1"
 lazy val shapelessVersion     = "2.3.3"
-lazy val silencerVersion      = "1.7.1"
 lazy val sourcecodeVersion    = "0.2.1"
 lazy val specs2Version        = "4.10.2"
-lazy val scala212Version      = "2.12.12"
 lazy val scala213Version      = "2.13.3"
 lazy val slf4jVersion         = "1.7.30"
 
@@ -33,14 +31,11 @@ lazy val postgisDep = "net.postgis" % "postgis-jdbc" % postGisVersion
 lazy val compilerFlags = Seq(
   scalacOptions in (Compile, console) ++= Seq(
     "-Ydelambdafy:inline",    // http://fs2.io/faq.html
-    "-P:silencer:checkUnused" // https://github.com/ghik/silencer#detecting-unused-annotations
   ),
   scalacOptions in (Compile, doc) --= Seq(
     "-Xfatal-warnings"
   ),
   libraryDependencies ++= Seq(
-    compilerPlugin("com.github.ghik" % "silencer-plugin" % silencerVersion cross CrossVersion.full),
-    "com.github.ghik" % "silencer-lib" % silencerVersion % Provided cross CrossVersion.full,
     "org.scala-lang.modules" %% "scala-collection-compat" % collCompatVersion
   )
 )
@@ -54,7 +49,7 @@ lazy val commonSettings =
   compilerFlags ++
   Seq(
     scalaVersion := scala213Version,
-    crossScalaVersions := Seq(scala212Version, scala213Version),
+    crossScalaVersions := Seq(scala213Version),
 
     // These sbt-header settings can't be set in ThisBuild for some reason
     headerMappings := headerMappings.value + (HeaderFileType.scala -> HeaderCommentStyle.cppStyleLineComment),

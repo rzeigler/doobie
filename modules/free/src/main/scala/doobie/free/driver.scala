@@ -8,8 +8,7 @@ import cats.~>
 import cats.effect.{ Async, ContextShift, ExitCase }
 import cats.free.{ Free => FF } // alias because some algebras have an op called Free
 import scala.concurrent.ExecutionContext
-import com.github.ghik.silencer.silent
-
+import scala.annotation.nowarn
 import java.lang.String
 import java.sql.Connection
 import java.sql.Driver
@@ -17,7 +16,7 @@ import java.sql.DriverPropertyInfo
 import java.util.Properties
 import java.util.logging.Logger
 
-@silent("deprecated")
+@nowarn
 object driver { module =>
 
   // Algebra of operations for Driver. Each accepts a visitor as an alternative to pattern-matching.

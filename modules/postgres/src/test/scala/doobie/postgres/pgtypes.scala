@@ -6,13 +6,12 @@ package doobie.postgres
 
 import java.math.{BigDecimal => JBigDecimal}
 import java.net.InetAddress
-import java.sql.Timestamp
 import java.time.temporal.ChronoField.NANO_OF_SECOND
-import java.time.{LocalDate, ZoneOffset}
+import java.time.LocalDate
 import java.util.UUID
 
 import cats.effect.{ContextShift, IO}
-import com.github.ghik.silencer.silent
+import scala.annotation.nowarn
 import doobie._
 import doobie.implicits._
 import doobie.postgres.enums._
@@ -273,35 +272,35 @@ class pgtypesspec extends Specification with ScalaCheck {
   // PostGIS geometry types
 
   // Random streams of geometry values
-  lazy val rnd: Iterator[Double] = Stream.continually(scala.util.Random.nextDouble).iterator: @silent("deprecated")
-  lazy val pts: Iterator[Point] = Stream.continually(new Point(rnd.next, rnd.next)).iterator: @silent("deprecated")
-  lazy val lss: Iterator[LineString] = Stream.continually(new LineString(Array(pts.next, pts.next, pts.next))).iterator: @silent("deprecated")
+  lazy val rnd: Iterator[Double] = Stream.continually(scala.util.Random.nextDouble).iterator: @nowarn
+  lazy val pts: Iterator[Point] = Stream.continually(new Point(rnd.next(), rnd.next())).iterator: @nowarn
+  lazy val lss: Iterator[LineString] = Stream.continually(new LineString(Array(pts.next(), pts.next(), pts.next()))).iterator: @nowarn
   lazy val lrs: Iterator[LinearRing] = Stream.continually(new LinearRing({
-    lazy val p = pts.next;
-    Array(p, pts.next, pts.next, pts.next, p)
-  })).iterator: @silent("deprecated")
-  lazy val pls: Iterator[Polygon] = Stream.continually(new Polygon(lras.next)).iterator: @silent("deprecated")
+    lazy val p = pts.next();
+    Array(p, pts.next(), pts.next(), pts.next(), p)
+  })).iterator: @nowarn
+  lazy val pls: Iterator[Polygon] = Stream.continually(new Polygon(lras.next())).iterator: @nowarn
 
   // Streams of arrays of random geometry values
-  lazy val ptas: Iterator[Array[Point]] = Stream.continually(Array(pts.next, pts.next, pts.next)).iterator: @silent("deprecated")
-  lazy val plas: Iterator[Array[Polygon]] = Stream.continually(Array(pls.next, pls.next, pls.next)).iterator: @silent("deprecated")
-  lazy val lsas: Iterator[Array[LineString]] = Stream.continually(Array(lss.next, lss.next, lss.next)).iterator: @silent("deprecated")
-  lazy val lras: Iterator[Array[LinearRing]] = Stream.continually(Array(lrs.next, lrs.next, lrs.next)).iterator: @silent("deprecated")
+  lazy val ptas: Iterator[Array[Point]] = Stream.continually(Array(pts.next(), pts.next(), pts.next())).iterator: @nowarn
+  lazy val plas: Iterator[Array[Polygon]] = Stream.continually(Array(pls.next(), pls.next(), pls.next())).iterator: @nowarn
+  lazy val lsas: Iterator[Array[LineString]] = Stream.continually(Array(lss.next(), lss.next(), lss.next())).iterator: @nowarn
+  lazy val lras: Iterator[Array[LinearRing]] = Stream.continually(Array(lrs.next(), lrs.next(), lrs.next())).iterator: @nowarn
 
   // All these types map to `geometry`
   def testInOutGeom[A <: Geometry : Meta](a: A) =
     testInOut[A]("geometry", a)
 
-  testInOutGeom[Geometry](pts.next)
-  testInOutGeom[ComposedGeom](new MultiLineString(lsas.next))
-  testInOutGeom[GeometryCollection](new GeometryCollection(Array(pts.next, lss.next)))
-  testInOutGeom[MultiLineString](new MultiLineString(lsas.next))
-  testInOutGeom[MultiPolygon](new MultiPolygon(plas.next))
-  testInOutGeom[PointComposedGeom](lss.next)
-  testInOutGeom[LineString](lss.next)
-  testInOutGeom[MultiPoint](new MultiPoint(ptas.next))
-  testInOutGeom[Polygon](pls.next)
-  testInOutGeom[Point](pts.next)
+  testInOutGeom[Geometry](pts.next())
+  testInOutGeom[ComposedGeom](new MultiLineString(lsas.next()))
+  testInOutGeom[GeometryCollection](new GeometryCollection(Array(pts.next(), lss.next())))
+  testInOutGeom[MultiLineString](new MultiLineString(lsas.next()))
+  testInOutGeom[MultiPolygon](new MultiPolygon(plas.next()))
+  testInOutGeom[PointComposedGeom](lss.next())
+  testInOutGeom[LineString](lss.next())
+  testInOutGeom[MultiPoint](new MultiPoint(ptas.next()))
+  testInOutGeom[Polygon](pls.next())
+  testInOutGeom[Point](pts.next())
 
   // hstore
   testInOut[Map[String, String]]("hstore")

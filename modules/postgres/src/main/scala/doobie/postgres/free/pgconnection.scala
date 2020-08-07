@@ -8,8 +8,7 @@ import cats.~>
 import cats.effect.{ Async, ContextShift, ExitCase }
 import cats.free.{ Free => FF } // alias because some algebras have an op called Free
 import scala.concurrent.ExecutionContext
-import com.github.ghik.silencer.silent
-
+import scala.annotation.nowarn
 import java.lang.Class
 import java.lang.String
 import java.sql.{ Array => SqlArray }
@@ -23,7 +22,7 @@ import org.postgresql.jdbc.PreferQueryMode
 import org.postgresql.largeobject.LargeObjectManager
 import org.postgresql.replication.PGReplicationConnection
 
-@silent("deprecated")
+@nowarn
 object pgconnection { module =>
 
   // Algebra of operations for PGConnection. Each accepts a visitor as an alternative to pattern-matching.

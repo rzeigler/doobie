@@ -8,7 +8,7 @@ import java.time.temporal.ChronoField.NANO_OF_SECOND
 import java.util.UUID
 
 import cats.effect.{ContextShift, IO}
-import com.github.ghik.silencer.silent
+import scala.annotation.nowarn
 import doobie._
 import doobie.h2.implicits._
 import doobie.implicits._
@@ -113,10 +113,10 @@ class h2typesspec extends Specification with ScalaCheck {
       TIME
       If fractional seconds precision is specified it should be from 0 to 9, 0 is default.
    */
-  testInOut[java.sql.Time]("TIME"): @silent
+  testInOut[java.sql.Time]("TIME"): @nowarn
   testInOutWithCustomTransform[java.time.LocalTime]("TIME")(_.withNano(0))
 
-  testInOut[java.sql.Date]("DATE"): @silent
+  testInOut[java.sql.Date]("DATE"): @nowarn
   testInOut[java.time.LocalDate]("DATE")
 
   /*

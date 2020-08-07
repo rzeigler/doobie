@@ -9,8 +9,7 @@ import cats.~>
 import cats.data.Kleisli
 import cats.effect.{ Async, Blocker, ContextShift, ExitCase }
 import scala.concurrent.ExecutionContext
-import com.github.ghik.silencer.silent
-
+import scala.annotation.nowarn
 // Types referenced in the JDBC API
 import java.io.InputStream
 import java.io.OutputStream
@@ -53,7 +52,7 @@ object KleisliInterpreter {
 }
 
 // Family of interpreters into Kleisli arrows for some monad M.
-@silent("deprecated")
+@nowarn
 trait KleisliInterpreter[M[_]] { outer =>
 
   implicit val asyncM: Async[M]

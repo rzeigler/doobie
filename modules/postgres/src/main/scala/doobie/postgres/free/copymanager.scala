@@ -8,8 +8,7 @@ import cats.~>
 import cats.effect.{ Async, ContextShift, ExitCase }
 import cats.free.{ Free => FF } // alias because some algebras have an op called Free
 import scala.concurrent.ExecutionContext
-import com.github.ghik.silencer.silent
-
+import scala.annotation.nowarn
 import java.io.InputStream
 import java.io.OutputStream
 import java.io.Reader
@@ -20,7 +19,7 @@ import org.postgresql.copy.{ CopyIn => PGCopyIn }
 import org.postgresql.copy.{ CopyManager => PGCopyManager }
 import org.postgresql.copy.{ CopyOut => PGCopyOut }
 
-@silent("deprecated")
+@nowarn
 object copymanager { module =>
 
   // Algebra of operations for PGCopyManager. Each accepts a visitor as an alternative to pattern-matching.
